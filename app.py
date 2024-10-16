@@ -18,8 +18,6 @@ st.title("Video Interview Question Generator")
 # Initialize session state for questions and upload count
 if 'questions' not in st.session_state:
     st.session_state.questions = []
-if 'upload_count' not in st.session_state:
-    st.session_state.upload_count = 0
 
 # Function to process video and extract questions
 def process_video(uploaded_file):
@@ -66,9 +64,22 @@ def process_video(uploaded_file):
         # Ask a question based on the context
         question = "Can you summarize the main points discussed in the text?"
         context = vector_store.similarity_search(question, k=1)
-        context_text = context[0].page_content if context else "No relevant context found."
 
         # Generate response and store the question
         answer = chain.run(input_documents=context, question=question)
         st.session_state.questions.append(answer)
+        if context:
+            answer = chain.run(input_documents=context, question=question)
+            st.session_state.questions.append(answer)
+
+uploaded_file = st.file_uploader("Upload your video file", type=["mp4", "mov", "avi"])
+
+if uploaded_file is not None:
+    st.video(uploaded_file)
+    process_video(uploaded_file)
+
+    if st.session_state.questions:
+        st.write(f"Generated Question: ", st.session_state.questions[-1])
+    else:
+        st.write("No question was generated.")
 
