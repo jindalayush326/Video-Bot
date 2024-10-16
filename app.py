@@ -75,14 +75,14 @@ def process_video(uploaded_file):
 # Loop until five questions are generated
 while len(st.session_state.questions) < 5:
     unique_key = f"uploader_{st.session_state.upload_count}"
-    uploaded_file = st.file_uploader("Upload your video file", type=["mp4", "mov", "avi"], key=unique_key)
+    uploaded_file = st.file_uploader("Upload your video file ({len(st.session_state.questions) + 1}/5)", type=["mp4", "mov", "avi"], key=unique_key)
 
     if uploaded_file is not None:
         st.video(uploaded_file)
         process_video(uploaded_file)
 
         if st.session_state.questions:
-            st.write("Generated Question: ", st.session_state.questions[-1])
+            st.write("Generated Question {len(st.session_state.questions)}: ", st.session_state.questions[-1])
         else:
             st.write("No question was generated.")
         
