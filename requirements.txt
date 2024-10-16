@@ -1,0 +1,7 @@
+streamlit
+moviepy
+SpeechRecognition
+langchain
+langchain_google_genai
+python-dotenv
+faiss-cpu
